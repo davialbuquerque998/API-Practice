@@ -1,9 +1,12 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 
-const mySum = (req:Request, res:Response) => {
-    const result:number = 1 + 100;
 
-    res.status(200).json({result});
+export function create(req:Request, res:Response) {
+    const {name, email, username, avatar, password, background} = req.body;
+    if(!name || !email || !username || !avatar || !password || !background){
+        return res.status(400).json({error:"Submit all fields for registration"}); //Bad request
+    }
+
+    return res.status(201).json({message:"Congratulations!", user:{name, email, username, avatar, background}});
 }
 
-export default mySum;

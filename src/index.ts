@@ -11,7 +11,7 @@ const app = express();
 app.use(express.json());
 app.use(morgan("tiny"));
 
-app.use("/sum",route);
+app.use("/user",route);
 
 
 app.listen(PORT, ()=>{

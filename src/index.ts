@@ -1,5 +1,6 @@
 import express, {NextFunction, Request, Response} from "express";
 import morgan from "morgan";
+import { connectDatabase } from "./database/db";
 import dotenv from "dotenv";
 import route from "./routes/user.route";
 dotenv.config();
@@ -7,6 +8,8 @@ dotenv.config();
 
 const PORT:number = parseInt(`${process.env.PORT}`) || 3000;
 const app = express();
+
+connectDatabase();
 
 app.use(express.json());
 app.use(morgan("tiny"));

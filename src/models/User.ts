@@ -1,4 +1,5 @@
 import mongoose, { Document, Model } from "mongoose";
+import bcrypt from "bcrypt";
 
 // Define the interface for the user document
 interface IUser extends Document {
@@ -19,11 +20,13 @@ const UserSchema = new mongoose.Schema<IUser>({
   email: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
+    lowercase:true
   },
   username: {
     type: String,
-    required: true
+    required: true,
+    unique:true
   },
   avatar: {
     type: String,
@@ -32,11 +35,20 @@ const UserSchema = new mongoose.Schema<IUser>({
   password: {
     type: String,
     required: true,
+    select:false
   },
   background: {
     type: String,
     required: true,
   }
+});
+
+// Modified pre-save hook
+UserSchema.pre("save", async function(this: IUser, next: Function) {
+  if (this.isModified("password")) {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
+  next();
 });
 
 // Create and export the User model

@@ -2,7 +2,9 @@ import express from "express";
 import morgan from "morgan";
 import { connectDatabase } from "./database/db";
 import dotenv from "dotenv";
-import route from "./routes/user.route";
+import userRoute from "./routes/user.route";
+import authRoute from "./routes/auth.route";
+
 dotenv.config();
 
 
@@ -14,7 +16,8 @@ connectDatabase();
 app.use(express.json());
 app.use(morgan("tiny"));
 
-app.use("/user",route);
+app.use("/user",userRoute);
+app.use("/auth",authRoute);
 
 
 app.listen(PORT, ()=>{

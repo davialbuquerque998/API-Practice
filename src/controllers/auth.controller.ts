@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
-import { loginService } from "../services/auth.service";
+import { loginService, generateToken } from "../services/auth.service";
 
 export async function login(req: Request, res: Response) {
     const { email, password } = req.body;
@@ -20,7 +20,9 @@ export async function login(req: Request, res: Response) {
             return;
         }
 
-        res.status(200).json(user);
+        const token = generateToken(user.id);
+
+        res.status(200).json({token:token});
         return;
     } catch (error) {
         res.status(500).json(error);
